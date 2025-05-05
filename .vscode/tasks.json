@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build MixItUp.WPF",
+            "command": "msbuild",
+            "type": "shell",
+            "args": [
+                "MixItUp.WPF/MixItUp.WPF.csproj",
+                "/property:Configuration=Debug",
+                "/property:Platform=x64",
+                "/m"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

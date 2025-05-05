@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug MixItUp.WPF",
+            "type": "clr",
+            "request": "launch",
+            "program": "${workspaceFolder}/MixItUp.WPF/bin/Debug/x64/MixItUp.exe",
+            "cwd": "${workspaceFolder}/MixItUp.WPF",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "targetArchitecture": "x86_64"
+        }
+    ]
+}
