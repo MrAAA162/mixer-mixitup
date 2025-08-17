@@ -11,6 +11,7 @@ Execute steps below sequentially one by one in the order they are listed.
 5. Upgrade MixItUp.Uninstaller\MixItUp.Uninstaller.csproj
 6. Upgrade MixItUp.Base\MixItUp.Base.csproj
 7. Upgrade MixItUp.SignalR.Client\MixItUp.SignalR.Client.csproj
+8. Upgrade MixItUp.WPF\MixItUp.WPF.csproj
 
 ## Settings
 
@@ -18,7 +19,6 @@ Execute steps below sequentially one by one in the order they are listed.
 
 | Project name                                   | Description                 |
 |:-----------------------------------------------|:---------------------------:|
-| MixItUp.WPF\MixItUp.WPF.csproj                 | Explicitly excluded         |
 
 ### Aggregate NuGet packages modifications across all projects
 
@@ -51,51 +51,18 @@ Execute steps below sequentially one by one in the order they are listed.
 
 ### Project upgrade details
 
-#### MixItUp.Installer\MixItUp.Installer.csproj modifications
+#### MixItUp.WPF\MixItUp.WPF.csproj modifications
 
 Project properties changes:
-  - Target framework should be changed from `.NETFramework,Version=v4.6.1` to `net8.0-windows`
-
-Feature upgrades:
-  - Convert project file to SDK-style.
-
-Other changes:
-  - Address all breaking changes and incompatibilities for .NET 8.0.
-
-#### MixItUp.Reporter\MixItUp.Reporter.csproj modifications
-
-Project properties changes:
-  - Target framework should be changed from `.NETFramework,Version=v4.6.1` to `net8.0-windows`
-
-Feature upgrades:
-  - Convert project file to SDK-style.
-
-Other changes:
-  - Address all breaking changes and incompatibilities for .NET 8.0.
-
-#### MixItUp.Uninstaller\MixItUp.Uninstaller.csproj modifications
-
-Project properties changes:
-  - Target framework should be changed from `.NETFramework,Version=v4.6.1` to `net8.0-windows`
-
-Feature upgrades:
-  - Convert project file to SDK-style.
-
-Other changes:
-  - Address all breaking changes and incompatibilities for .NET 8.0.
-
-#### MixItUp.Base\MixItUp.Base.csproj modifications
+  - Target framework should be changed from `.NETFramework,Version=v4.6.2` to `net8.0-windows`
 
 NuGet packages changes:
-  - System.IO.Ports should be updated from `6.0.0` to `8.0.0` (*recommended for .NET 8.0*)
+  - Update all packages listed in the NuGet packages section above as applicable.
+  - Remove or replace incompatible packages as recommended.
 
-Other changes:
-  - Address all breaking changes and incompatibilities for .NET 8.0.
-
-#### MixItUp.SignalR.Client\MixItUp.SignalR.Client.csproj modifications
-
-NuGet packages changes:
-  - Microsoft.AspNetCore.SignalR.Client should be updated from `6.0.3` to `8.0.19` (*recommended for .NET 8.0*)
+Feature upgrades:
+  - Convert project file to SDK-style.
+  - Upgrade all XAML, controls, and UI assets to be compatible with .NET 8.0 and address deprecated APIs.
 
 Other changes:
   - Address all breaking changes and incompatibilities for .NET 8.0.
