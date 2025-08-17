@@ -1,38 +1,34 @@
-﻿using MixItUp.API.V2.Models;
+using Microsoft.AspNetCore.Mvc;
+using MixItUp.API.V2.Models;
 using MixItUp.Base.Model;
 using MixItUp.Base.Services;
 using System;
 using System.Threading.Tasks;
-using System.Web.Http;
 
-namespace MixItUp.WPF.Services.DeveloperAPI.V2
+namespace MixItUp.API.NET8.V2
 {
-    [RoutePrefix("api/v2/chat")]
-    public class ChatV2Controller : ApiController
+    [ApiController]
+    [Route("api/v2/chat")]
+    public class ChatController : ControllerBase
     {
-        [Route("message")]
-        [HttpPost]
-        public async Task<IHttpActionResult> SendChatMessage([FromBody] SendChatMessage chatMessage)
+        [HttpPost("message")]
+        public async Task<IActionResult> SendChatMessage([FromBody] SendChatMessage chatMessage)
         {
             if (chatMessage == null)
             {
-                return BadRequest($"Missing chat message");
+                return BadRequest("Missing chat message");
             }
-
             StreamingPlatformTypeEnum platform = StreamingPlatformTypeEnum.All;
             if (!string.IsNullOrEmpty(chatMessage.Platform) && !Enum.TryParse<StreamingPlatformTypeEnum>(chatMessage.Platform, ignoreCase: true, out platform))
             {
                 return BadRequest($"Unknown platform: {chatMessage.Platform}");
             }
-
             await ServiceManager.Get<ChatService>().SendMessage(chatMessage.Message, platform, chatMessage.SendAsStreamer);
-
             return Ok();
         }
 
-        [Route("clear")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ClearChat()
+        [HttpPost("clear")]
+        public async Task<IActionResult> ClearChat()
         {
             await ServiceManager.Get<ChatService>().ClearMessages(StreamingPlatformTypeEnum.All);
             return Ok();

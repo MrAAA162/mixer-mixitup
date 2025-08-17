@@ -12,11 +12,11 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web.Http;
-using WebSocketSharp;
 
 namespace MixItUp.WPF.Services.DeveloperAPI.V1
 {
     [RoutePrefix("api/quotes")]
+    [Obsolete("This v1 API controller is deprecated. Please use the V2 API.")]
     public class QuotesV1Controller : ApiController
     {
         [Route]
@@ -48,7 +48,7 @@ namespace MixItUp.WPF.Services.DeveloperAPI.V1
         [HttpPut]
         public async Task<Quote> Add([FromBody]AddQuote quote)
         {
-            if (quote == null || quote.QuoteText.IsNullOrEmpty())
+            if (quote == null || string.IsNullOrEmpty(quote.QuoteText))
             {
                 var resp = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {

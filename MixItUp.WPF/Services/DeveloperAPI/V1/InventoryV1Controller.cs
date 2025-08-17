@@ -12,6 +12,7 @@ using System.Web.Http;
 namespace MixItUp.WPF.Services.DeveloperAPI.V1
 {
     [RoutePrefix("api/inventory")]
+    [Obsolete("This v1 API controller is deprecated. Please use the V2 API.")]
     public class InventoryV1Controller : ApiController
     {
         [Route]

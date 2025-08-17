@@ -16,6 +16,7 @@ using System.Web.Http;
 namespace MixItUp.WPF.Services.DeveloperAPI.V1
 {
     [RoutePrefix("api/currency")]
+    [Obsolete("This v1 API controller is deprecated. Please use the V2 API.")]
     public class CurrencyV1Controller : ApiController
     {
         [Route]

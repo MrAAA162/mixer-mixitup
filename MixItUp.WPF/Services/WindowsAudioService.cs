@@ -1,6 +1,7 @@
 ﻿using MixItUp.Base;
 using MixItUp.Base.Services;
 using MixItUp.Base.Util;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -191,15 +192,13 @@ namespace MixItUp.WPF.Services
 
         public IEnumerable<string> GetOutputDevices()
         {
-            List<string> results = new List<string>();
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            var results = new List<string>();
+            using (var enumerator = new MMDeviceEnumerator())
             {
-                try
+                foreach (var device in enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
                 {
-                    WaveOutCapabilities capabilities = WaveOut.GetCapabilities(i);
-                    results.Add(capabilities.ProductName);
+                    results.Add(device.FriendlyName);
                 }
-                catch (Exception ex) { Logger.Log(ex); }
             }
             return results;
         }
@@ -311,17 +310,16 @@ namespace MixItUp.WPF.Services
         {
             if (!string.IsNullOrEmpty(deviceName))
             {
-                for (int i = 0; i < WaveOut.DeviceCount; i++)
+                using (var enumerator = new MMDeviceEnumerator())
                 {
-                    try
+                    var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active).ToList();
+                    for (int i = 0; i < devices.Count; i++)
                     {
-                        WaveOutCapabilities capabilities = WaveOut.GetCapabilities(i);
-                        if (deviceName.Equals(capabilities.ProductName))
+                        if (deviceName.Equals(devices[i].FriendlyName))
                         {
                             return i;
                         }
                     }
-                    catch (Exception ex) { Logger.Log(ex); }
                 }
             }
             return -1;

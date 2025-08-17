@@ -11,11 +11,13 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace MixItUp.WPF.Services.DeveloperAPI.V1
 {
     [RoutePrefix("api/commands")]
+    [Obsolete("This v1 API controller is deprecated. Please use the V2 API.")]
     public class CommandV1Controller : ApiController
     {
         [Route]

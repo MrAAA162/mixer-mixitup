@@ -1,22 +1,21 @@
-﻿using MixItUp.API.V2.Models;
+using Microsoft.AspNetCore.Mvc;
+using MixItUp.API.V2.Models;
 using MixItUp.Base;
 using MixItUp.Base.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Http;
 
-namespace MixItUp.WPF.Services.DeveloperAPI.V2
+namespace MixItUp.API.NET8.V2
 {
-    [RoutePrefix("api/v2/currency")]
-    public class CurrencyV2Controller : ApiController
+    [ApiController]
+    [Route("api/v2/currency")]
+    public class CurrencyController : ControllerBase
     {
-        [Route]
         [HttpGet]
-        public IHttpActionResult GetCurrencies()
+        public ActionResult<List<GetCurrencyResponse>> GetCurrencies()
         {
             var currencies = new List<GetCurrencyResponse>();
-
             foreach (var currency in ChannelSession.Settings.Currency)
             {
                 currencies.Add(new GetCurrencyResponse
@@ -25,45 +24,36 @@ namespace MixItUp.WPF.Services.DeveloperAPI.V2
                     Name = currency.Value.Name
                 });
             }
-
             return Ok(currencies);
         }
 
-        [Route("{currencyId:guid}/{userId:guid}")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetCurrencyAmountForUser(Guid currencyId, Guid userId)
+        [HttpGet("{currencyId:guid}/{userId:guid}")]
+        public async Task<ActionResult<int>> GetCurrencyAmountForUser(Guid currencyId, Guid userId)
         {
             if (!ChannelSession.Settings.Currency.TryGetValue(currencyId, out var currency) || currency == null)
             {
                 return NotFound();
             }
-
             await ServiceManager.Get<UserService>().LoadAllUserData();
-
             if (!ChannelSession.Settings.Users.TryGetValue(userId, out var user) || user == null)
             {
                 return NotFound();
             }
-
             return Ok(currency.GetAmount(user));
         }
 
-        [Route("{currencyId:guid}/{userId:guid}")]
-        [HttpPatch]
-        public async Task<IHttpActionResult> UpdateCurrencyAmountForUser(Guid currencyId, Guid userId, [FromBody] UpdateCurrencyAmount updateAmount)
+        [HttpPatch("{currencyId:guid}/{userId:guid}")]
+        public async Task<ActionResult<int>> UpdateCurrencyAmountForUser(Guid currencyId, Guid userId, [FromBody] UpdateCurrencyAmount updateAmount)
         {
             if (!ChannelSession.Settings.Currency.TryGetValue(currencyId, out var currency) || currency == null)
             {
                 return NotFound();
             }
-
             await ServiceManager.Get<UserService>().LoadAllUserData();
-
             if (!ChannelSession.Settings.Users.TryGetValue(userId, out var user) || user == null)
             {
                 return NotFound();
             }
-
             if (updateAmount.Amount > 0)
             {
                 currency.AddAmount(user, updateAmount.Amount);
@@ -72,28 +62,22 @@ namespace MixItUp.WPF.Services.DeveloperAPI.V2
             {
                 currency.SubtractAmount(user, -1 * updateAmount.Amount);
             }
-
             return Ok(currency.GetAmount(user));
         }
 
-        [Route("{currencyId:guid}/{userId:guid}")]
-        [HttpPut]
-        public async Task<IHttpActionResult> SetCurrencyAmountForUser(Guid currencyId, Guid userId, [FromBody] UpdateCurrencyAmount updateAmount)
+        [HttpPut("{currencyId:guid}/{userId:guid}")]
+        public async Task<ActionResult<int>> SetCurrencyAmountForUser(Guid currencyId, Guid userId, [FromBody] UpdateCurrencyAmount updateAmount)
         {
             if (!ChannelSession.Settings.Currency.TryGetValue(currencyId, out var currency) || currency == null)
             {
                 return NotFound();
             }
-
             await ServiceManager.Get<UserService>().LoadAllUserData();
-
             if (!ChannelSession.Settings.Users.TryGetValue(userId, out var user) || user == null)
             {
                 return NotFound();
             }
-
             currency.SetAmount(user, updateAmount.Amount);
-
             return Ok(currency.GetAmount(user));
         }
     }

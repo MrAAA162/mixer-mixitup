@@ -36,6 +36,7 @@ del $(TargetDir)MixItUp.zip</PostBuildEvent>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Removed any explicit System.Windows references -->
     <PackageReference Include="AWSSDK.Core" Version="3.7.107.4" />
     <PackageReference Include="AWSSDK.Polly" Version="3.7.107.6" />
     <PackageReference Include="CacheManager.Core" Version="1.2.0" />
@@ -121,7 +122,6 @@ del $(TargetDir)MixItUp.zip</PostBuildEvent>
     <PackageReference Include="System.CodeDom" Version="7.0.0" />
     <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.0-preview.7.25380.108" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
@@ -317,5 +317,8 @@ del $(TargetDir)MixItUp.zip</PostBuildEvent>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.Polly.3.7.107.6\analyzers\dotnet\cs\AWSSDK.Polly.CodeAnalysis.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\APIs\MixItUp.API\MixItUp.API.csproj" />
   </ItemGroup>
 </Project>
