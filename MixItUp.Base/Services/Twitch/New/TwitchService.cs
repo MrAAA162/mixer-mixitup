@@ -40,7 +40,7 @@ namespace MixItUp.Base.Services.Twitch.New
 
         public override string Name { get { return Resources.Twitch; } }
 
-        public override string ClientID { get { return "50ipfqzuqbv61wujxcm80zyzqwoqp1"; } }
+        public override string ClientID { get { return "9hrrjv3als35tsizvxnltwtt7t8ptg"; } }
         public override string ClientSecret { get { return ServiceManager.Get<SecretsService>().GetSecret("TwitchSecret"); } }
 
         public override StreamingPlatformTypeEnum Platform { get { return StreamingPlatformTypeEnum.Twitch; } }
