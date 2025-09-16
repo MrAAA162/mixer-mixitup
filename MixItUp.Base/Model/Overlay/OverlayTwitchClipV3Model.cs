@@ -29,9 +29,10 @@ namespace MixItUp.Base.Model.Overlay
     {
         private const string ClipThumbnailURLPreviewSegment = "-preview-";
 
-        public static readonly string DefaultHTML = OverlayResources.OverlayTwitchClipVideoDefaultHTML;
-        public static readonly string DefaultCSS = OverlayResources.OverlayTwitchClipVideoDefaultCSS;
-        public static readonly string DefaultJavascript = OverlayResources.OverlayActionDefaultJavascript + Environment.NewLine + Environment.NewLine + OverlayResources.OverlayVideoActionDefaultJavascript;
+        public static readonly string DefaultHTML = OverlayResources.OverlayTwitchClipEmbedDefaultHTML;
+        public static readonly string DefaultCSS = OverlayResources.OverlayTwitchClipEmbedDefaultCSS;
+        public static readonly string DefaultJavascript = OverlayResources.OverlayActionDefaultJavascript + Environment.NewLine + Environment.NewLine + OverlayResources.OverlayTwitchClipEmbedDefaultJavascript;
+
 
         public static readonly List<string> TwitchClipURLPrefixes = new List<string>()
         {
@@ -172,20 +173,8 @@ namespace MixItUp.Base.Model.Overlay
 
                 this.ClipID = clip.id;
                 this.ClipDuration = clip.duration;
-
-                int index = clip.thumbnail_url.IndexOf(ClipThumbnailURLPreviewSegment);
-                if (index >= 0)
-                {
-                    this.ClipDirectLink = clip.thumbnail_url.Substring(0, index) + ".mp4";
-                    return true;
-                }
-                else
-                {
-                    await ServiceManager.Get<ChatService>().SendMessage(Resources.TwitchClipNewerClipFormatUnsupported, StreamingPlatformTypeEnum.Twitch);
-                    Logger.Log(LogLevel.Error, "Failed to process clip due to new formatting: " + JSONSerializerHelper.SerializeToString(clip));
-                }
+                return true;
             }
-
             return false;
         }
     }
