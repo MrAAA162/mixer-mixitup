@@ -91,7 +91,7 @@ namespace MixItUp.Base.ViewModel.Services
                 {
                     await DialogHelper.ShowMessage(Resources.DonorDriveMissingCharity);
                 }
-                ChannelSession.Settings.DonorDriveCharityURL = this.SelectedCharity.programURL;
+                ChannelSession.Settings.DonorDriveCharityURL = this.SelectedCharity.links?.home;
 
                 if (!string.IsNullOrWhiteSpace(this.ParticipantID))
                 {

@@ -31,6 +31,9 @@ namespace MixItUp.Base.Services.External
         [DataMember]
         public string programURL { get; set; }
         [DataMember]
+        public DonorDriveLinks links { get; set; }
+
+        [DataMember]
         public bool streamingIsEnabled { get; set; }
     }
 
@@ -358,6 +361,8 @@ namespace MixItUp.Base.Services.External
         public string register { get; set; }
         [DataMember]
         public string stream { get; set; }
+        [DataMember]
+        public string home { get; set; }
     }
 
     /// <summary>
