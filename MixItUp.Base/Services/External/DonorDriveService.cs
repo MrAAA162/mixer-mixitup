@@ -375,7 +375,7 @@ namespace MixItUp.Base.Services.External
         public static readonly DonorDriveCharity CustomCharity = new DonorDriveCharity()
         {
             displayName = Resources.Custom,
-            programURL = string.Empty
+            links = new DonorDriveLinks() { home = string.Empty }
         };
 
         public string Name { get { return Resources.DonorDrive; }}
@@ -524,7 +524,7 @@ namespace MixItUp.Base.Services.External
                             charities.Add(new DonorDriveCharity()
                             {
                                 displayName = "Integration",
-                                programURL = "https://integrations.donordrive.com"
+                                links = new DonorDriveLinks() { home = "https://integrations.donordrive.com" }
                             });
                         }
 
