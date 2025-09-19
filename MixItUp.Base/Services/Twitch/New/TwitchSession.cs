@@ -168,6 +168,13 @@ namespace MixItUp.Base.Services.Twitch.New
                 return new Result(Resources.TwitchFailedToGetUserData);
             }
 
+            var labels = await this.StreamerService.GetContentClassificationLabels();
+            if (labels != null)
+            {
+                this.ContentClassificationLabels.Clear();
+                this.ContentClassificationLabels.AddRange(labels.Where(l => !string.Equals(l.id, "MatureGame", StringComparison.Ordinal)));
+            }
+
             this.StreamerID = this.StreamerModel?.id;
             this.StreamerUsername = this.StreamerModel?.login;
             this.StreamerAvatarURL = this.StreamerModel?.profile_image_url;
