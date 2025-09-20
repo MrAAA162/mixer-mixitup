@@ -254,10 +254,36 @@ namespace MixItUp.Base.Services.Twitch.New
             }
         }
 
+        private bool IsSharedChatEvent(JObject payload)
+        {
+            string streamerID = ServiceManager.Get<TwitchSession>().StreamerID;
+
+            string sourceBroadcasterID = payload.GetValueOrDefault<string>("source_broadcaster_user_id", null);
+
+            // If there's a source broadcaster ID and it's not ours, this is a shared chat event from another channel
+            if (!string.IsNullOrEmpty(sourceBroadcasterID) &&
+                !string.Equals(sourceBroadcasterID, streamerID, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            string broadcasterID = payload.GetValueOrDefault<string>("broadcaster_user_id", null);
+
+            return !string.IsNullOrEmpty(broadcasterID) &&
+                   !string.Equals(broadcasterID, streamerID, StringComparison.OrdinalIgnoreCase);
+        }
+
+
         private async Task ProcessNotification(NotificationMessage message)
         {
             try
             {
+                if (IsSharedChatEvent(message.Payload.Event))
+                {
+                    Logger.Log(LogLevel.Debug, $"Ignoring event from other channel in shared chat: {message.Metadata.SubscriptionType}");
+                    return;
+                }
+
                 switch (message.Metadata.SubscriptionType)
                 {
                     case "stream.online":
