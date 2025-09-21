@@ -233,17 +233,10 @@ namespace MixItUp.Base.Services.External
             if (response != null)
             {
                 JToken actionObj = response["actionObject"];
-                if (actionObj != null && actionObj["listOfMemes"] is JArray memes)
+                if (actionObj != null && actionObj["listOfMemes"] is JArray memeSounds)
                 {
-                    foreach (JToken meme in memes)
+                    foreach (VoicemodMemeModel memeSound in memeSounds.ToTypedArray<VoicemodMemeModel>())
                     {
-                        var memeSound = new VoicemodMemeModel
-                        {
-                            Name = meme["Name"]?.ToString(),
-                            FileName = meme["FileName"]?.ToString(),
-                            Type = meme["Type"]?.ToString(),
-                            Image = meme["Image"]?.ToString()
-                        };
                         results.Add(memeSound);
                     }
                 }
