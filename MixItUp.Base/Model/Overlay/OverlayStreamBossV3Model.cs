@@ -156,10 +156,8 @@ namespace MixItUp.Base.Model.Overlay
             if (amount > 0)
             {
                 int damage = (int)Math.Round(amount);
-
                 CommandParametersModel parameters = new CommandParametersModel(user, this.GetSpecialIdentifiers());
                 parameters.TargetUser = await this.GetCurrentBoss();
-
                 if (!forceDamage && this.CurrentBoss == user.ID && this.SelfHealingMultiplier > 0)
                 {
                     this.CurrentHealth = Math.Min(damage + this.CurrentHealth, this.CurrentMaxHealth);
@@ -174,7 +172,7 @@ namespace MixItUp.Base.Model.Overlay
                     if (this.CurrentHealth > 0)
                     {
                         await this.Damage();
-                        
+
                         await ServiceManager.Get<CommandService>().Queue(this.DamageOccurredCommandID, parameters);
                     }
                     else
@@ -187,11 +185,20 @@ namespace MixItUp.Base.Model.Overlay
                         this.CurrentMaxHealth += this.KillBonusHealth;
                         this.CurrentMaxHealth += (int)Math.Round(Math.Abs(this.CurrentHealth) * this.OverkillBonusHealthMultiplier);
                         this.CurrentHealth = this.CurrentMaxHealth;
-
                         await this.NewBoss(user);
                         await ServiceManager.Get<CommandService>().Queue(this.NewBossCommandID, parameters);
                     }
                 }
+            }
+            else if (amount < 0)
+            {
+                int healing = (int)Math.Round(Math.Abs(amount));
+                CommandParametersModel parameters = new CommandParametersModel(user, this.GetSpecialIdentifiers());
+                parameters.TargetUser = await this.GetCurrentBoss();
+                this.CurrentHealth = Math.Min(healing + this.CurrentHealth, this.CurrentMaxHealth);
+                await this.Heal();
+                parameters.SpecialIdentifiers[StreamBossHealingSpecialIdentifier] = healing.ToString();
+                await ServiceManager.Get<CommandService>().Queue(this.HealingOccurredCommandID, parameters);
             }
         }
 
